@@ -1,0 +1,338 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int            @id @default(autoincrement())
+  email               String         @unique
+  password            String
+  name                String
+  phone               String?
+  profileImage        String?
+  role                Role
+  isVerified          Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  admin               Admin?
+  clientContracts     Contract[]     @relation("ClientContracts")
+  freelancerContracts Contract[]     @relation("FreelancerContracts")
+  disputesOpened      Dispute[]      @relation("DisputeOpenedBy")
+  disputesResolved    Dispute[]      @relation("DisputeResolvedBy")
+  employer            Employer?
+  freelancer          Freelancer?
+  jobs                Job[]
+  receivedMessages    Message[]      @relation("ReceivedMessages")
+  sentMessages        Message[]      @relation("SentMessages")
+  notifications       Notification[]
+  proposals           Proposal[]     @relation("FreelancerProposals")
+  reviewsReceived     Review[]       @relation("Reviewee")
+  reviewsGiven        Review[]       @relation("Reviewer")
+  wallet              Wallet?
+}
+
+model Employer {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  companyName    String
+  companyWebsite String?
+
+  companySize String?
+  industry    String?
+  location    String?
+
+  description String?
+
+  taxId String?
+
+  jobsPosted Int @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Freelancer {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  title    String?
+  bio      String?
+  location String?
+
+  hourlyRate      Float @default(0)
+  experienceYears Int   @default(0)
+
+  education String?
+  website   String?
+  github    String?
+  linkedin  String?
+
+  totalEarnings Float @default(0)
+  averageRating Float @default(0)
+
+  availability Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  skills FreelancerSkill[]
+}
+
+model Skill {
+  id          Int               @id @default(autoincrement())
+  name        String            @unique
+  freelancers FreelancerSkill[]
+}
+
+model FreelancerSkill {
+  id           Int        @id @default(autoincrement())
+  freelancerId Int
+  skillId      Int
+  freelancer   Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  skill        Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+}
+
+model Admin {
+  id          Int               @id @default(autoincrement())
+  userId      Int               @unique
+  department  String?
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permissions AdminPermission[]
+}
+
+model Permission {
+  id     Int               @id @default(autoincrement())
+  name   String            @unique
+  admins AdminPermission[]
+}
+
+model AdminPermission {
+  id           Int        @id @default(autoincrement())
+  adminId      Int
+  permissionId Int
+  admin        Admin      @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String
+  budget      Float
+  status      JobStatus  @default(OPEN)
+  clientId    Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  contracts   Contract[]
+  client      User       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  proposals   Proposal[]
+}
+
+model Proposal {
+  id           Int            @id @default(autoincrement())
+  coverLetter  String
+  bidAmount    Float
+  status       ProposalStatus @default(PENDING)
+  jobId        Int
+  freelancerId Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  contract     Contract?
+  freelancer   User           @relation("FreelancerProposals", fields: [freelancerId], references: [id])
+  job          Job            @relation(fields: [jobId], references: [id])
+}
+
+model Contract {
+  id           Int            @id @default(autoincrement())
+  jobId        Int
+  clientId     Int
+  freelancerId Int
+  proposalId   Int?           @unique
+  status       ContractStatus @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  client       User           @relation("ClientContracts", fields: [clientId], references: [id])
+  freelancer   User           @relation("FreelancerContracts", fields: [freelancerId], references: [id])
+  job          Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  proposal     Proposal?      @relation(fields: [proposalId], references: [id])
+  disputes     Dispute[]
+  milestones   Milestone[]
+  reviews      Review[]
+}
+
+model Milestone {
+  id         Int @id @default(autoincrement())
+  contractId Int
+
+  title       String
+  description String?
+  amount      Float
+
+  status MilestoneStatus @default(PENDING)
+
+  dueDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  escrow Escrow?
+}
+
+model Wallet {
+  id      Int   @id @default(autoincrement())
+  userId  Int   @unique
+  balance     Decimal @default(0)
+  heldBalance Decimal @default(0) // 🧠 IMPORTANT: money locked in escrow
+
+  transactions Transaction[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id       Int @id @default(autoincrement())
+  walletId Int
+
+  amount Float
+  type   TransactionType
+  status TransactionStatus @default(COMPLETED)
+
+  referenceId   Int? // milestoneId / escrowId
+  referenceType String? // "MILESTONE" | "ESCROW"
+
+  description String?
+
+  createdAt DateTime @default(now())
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  content    String
+  createdAt  DateTime @default(now())
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+}
+
+model Escrow {
+  id Int @id @default(autoincrement())
+
+  milestoneId  Int @unique
+  clientId     Int
+  freelancerId Int
+
+  amount Float
+  status EscrowStatus @default(HELD)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  milestone Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  type      String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  contractId Int
+  reviewerId Int
+  revieweeId Int
+  rating     Int
+  comment    String?
+  createdAt  DateTime @default(now())
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  reviewee   User     @relation("Reviewee", fields: [revieweeId], references: [id])
+  reviewer   User     @relation("Reviewer", fields: [reviewerId], references: [id])
+
+  @@unique([contractId, reviewerId])
+}
+
+model Dispute {
+  id          Int           @id @default(autoincrement())
+  contractId  Int
+  openedById  Int
+  reason      String
+  description String
+  status      DisputeStatus @default(OPEN)
+  resolution  String?
+  resolvedBy  Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  contract    Contract      @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  openedBy    User          @relation("DisputeOpenedBy", fields: [openedById], references: [id])
+  resolver    User?         @relation("DisputeResolvedBy", fields: [resolvedBy], references: [id])
+}
+
+enum Role {
+  CLIENT
+  FREELANCER
+  ADMIN
+}
+
+enum JobStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum ProposalStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum ContractStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum MilestoneStatus {
+  PENDING
+  FUNDED
+  IN_PROGRESS
+  SUBMITTED
+  APPROVED
+  RELEASED
+}
+enum TransactionType {
+  DEPOSIT
+  DEBIT
+  HOLD
+  RELEASE
+  CREDIT
+  RELEASED
+}
+
+enum DisputeStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+enum EscrowStatus {
+  HELD
+  RELEASED
+  REFUNDED
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
