@@ -6,7 +6,7 @@ const app = express();
 
 // CORS handles OPTIONS automatically - no manual handler needed
 app.use(cors({
-   "https://frelanceconnect.vercel.app",
+   origin: "https://frelanceconnect.vercel.app",
   credentials: true,
   methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
