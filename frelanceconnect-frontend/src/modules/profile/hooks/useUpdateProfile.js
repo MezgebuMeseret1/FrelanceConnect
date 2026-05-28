@@ -3,7 +3,7 @@
 import { useState } from "react";
 import client from "../../../core/api/client";
 
-const API_URL = "http://localhost:5001/api/v1/profile";
+const API_URL = "/profile";
 
 const useUpdateProfile = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const useUpdateProfile = () => {
       setError("");
       setSuccess("");
 
-      const res = await axios.put(
+      const res = await client.put(
         `${API_URL}/freelancer`,
         profileData,
         {
@@ -51,7 +51,7 @@ const useUpdateProfile = () => {
       setError("");
       setSuccess("");
 
-      const res = await axios.put(
+      const res = await client.put(
         `${API_URL}/employer`,
         profileData,
         {
@@ -88,7 +88,7 @@ const useUpdateProfile = () => {
 
       formData.append("image", imageFile);
 
-      const res = await axios.post(
+      const res = await client.post(
         `${API_URL}/upload-avatar`,
         formData,
         {
@@ -128,3 +128,4 @@ const useUpdateProfile = () => {
 };
 
 export default useUpdateProfile;
+

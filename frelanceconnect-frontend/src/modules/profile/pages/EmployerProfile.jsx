@@ -25,8 +25,8 @@ const EmployerProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/api/v1/profiles/me",
+      const res = await client.get(
+        "/profiles/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -457,3 +457,4 @@ const EmployerProfile = () => {
 };
 
 export default EmployerProfile;
+

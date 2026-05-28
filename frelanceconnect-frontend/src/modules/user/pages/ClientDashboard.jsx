@@ -46,8 +46,8 @@ const ClientDashboard = () => {
   // FETCH JOBS
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/api/v1/jobs",
+      const res = await client.get(
+        "/jobs",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -677,3 +677,4 @@ const ClientDashboard = () => {
 };
 
 export default ClientDashboard;
+

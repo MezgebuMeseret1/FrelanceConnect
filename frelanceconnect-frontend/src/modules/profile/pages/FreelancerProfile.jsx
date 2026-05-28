@@ -57,8 +57,8 @@ const GithubIcon = (props) => (
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/api/v1/profiles/me",
+      const res = await client.get(
+        "/profiles/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -557,3 +557,4 @@ const GithubIcon = (props) => (
 };
 
 export default FreelancerProfile;
+

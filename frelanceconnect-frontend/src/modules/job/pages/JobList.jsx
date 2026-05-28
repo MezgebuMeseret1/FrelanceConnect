@@ -24,8 +24,8 @@ const JobList = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5001/api/v1/jobs"
+        const res = await client.get(
+          "/jobs"
         );
 
         setJobs(res.data.data || []);
@@ -543,3 +543,4 @@ const JobList = () => {
 };
 
 export default JobList;
+

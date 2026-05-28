@@ -20,8 +20,8 @@ const JobProposals = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        `http://localhost:5001/api/v1/proposals/job/${id}`,
+      const res = await client.get(
+        `/proposals/job/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -39,8 +39,8 @@ const JobProposals = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.patch(
-        `http://localhost:5001/api/v1/proposals/${proposalId}/status`,
+      await client.patch(
+        `/proposals/${proposalId}/status`,
         { status },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -276,3 +276,4 @@ const styles = {
   },
 };
 export default JobProposals;
+

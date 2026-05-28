@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import client from "../../../core/api/client";
 
-const API_URL = "http://localhost:5001/api/v1";
+const API_URL = "";
 
 const useProfile = () => {
   const token = localStorage.getItem("token");
@@ -30,7 +30,7 @@ const useProfile = () => {
     try {
       setLoading(true);
 
-      const res = await axios.get(
+      const res = await client.get(
         `${API_URL}/profile/me`,
         config
       );
@@ -57,7 +57,7 @@ const useProfile = () => {
     try {
       setLoading(true);
 
-      const res = await axios.put(
+      const res = await client.put(
         `${API_URL}/profile/me`,
         payload,
         config
@@ -94,7 +94,7 @@ const useProfile = () => {
 
       formData.append("image", file);
 
-      const res = await axios.post(
+      const res = await client.post(
         `${API_URL}/profile/upload-avatar`,
         formData,
         {
@@ -136,7 +136,7 @@ const useProfile = () => {
     try {
       setLoading(true);
 
-      const res = await axios.put(
+      const res = await client.put(
         `${API_URL}/profile/skills`,
         { skills },
         config
@@ -169,7 +169,7 @@ const useProfile = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
+      const res = await client.post(
         `${API_URL}/profile/experience`,
         experience,
         config
@@ -204,7 +204,7 @@ const useProfile = () => {
     try {
       setLoading(true);
 
-      const res = await axios.delete(
+      const res = await client.delete(
         `${API_URL}/profile/experience/${experienceId}`,
         config
       );
@@ -237,7 +237,7 @@ const useProfile = () => {
     try {
       setLoading(true);
 
-      const res = await axios.put(
+      const res = await client.put(
         `${API_URL}/profile/portfolio-links`,
         { links },
         config
@@ -307,3 +307,4 @@ const useProfile = () => {
 };
 
 export default useProfile;
+

@@ -31,8 +31,8 @@ const MyProposals = () => {
 
   const fetchMyProposals = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/api/v1/proposals/me",
+      const res = await client.get(
+        "/proposals/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -402,3 +402,4 @@ const MyProposals = () => {
 };
 
 export default MyProposals;
+

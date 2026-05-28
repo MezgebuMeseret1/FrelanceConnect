@@ -32,8 +32,8 @@ const SubmitProposal = () => {
     try {
       setLoading(true);
 
-      await axios.post(
-        "http://localhost:5001/api/v1/proposals",
+      await client.post(
+        "/proposals",
         {
           jobId: Number(jobId),
           coverLetter: form.coverLetter,
@@ -168,3 +168,4 @@ const SubmitProposal = () => {
 };
 
 export default SubmitProposal;
+

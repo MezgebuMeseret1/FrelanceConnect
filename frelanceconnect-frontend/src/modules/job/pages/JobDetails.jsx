@@ -8,8 +8,8 @@ const JobDetails = () => {
 
   useEffect(() => {
     const fetchJob = async () => {
-      const res = await axios.get(
-        `http://localhost:5001/api/v1/jobs/${id}`
+      const res = await client.get(
+        `/jobs/${id}`
       );
 
       setJob(res.data.data);
@@ -38,3 +38,4 @@ const styles = {
 };
 
 export default JobDetails;
+

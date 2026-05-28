@@ -28,8 +28,8 @@ const MyContracts = () => {
 
   const fetchContracts = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5001/api/v1/contracts/me",
+      const res = await client.get(
+        "/contracts/me",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -348,3 +348,4 @@ const MyContracts = () => {
 };
 
 export default MyContracts;
+

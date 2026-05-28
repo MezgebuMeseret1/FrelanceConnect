@@ -32,8 +32,8 @@ const ContractDetails = () => {
 
   const fetchContract = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5001/api/v1/contracts/${id}`,
+      const res = await client.get(
+        `/contracts/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -411,3 +411,4 @@ const ContractDetails = () => {
 };
 
 export default ContractDetails;
+
