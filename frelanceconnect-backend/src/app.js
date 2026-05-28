@@ -24,5 +24,9 @@ app.use((req, res, next) => {
 });
 
 app.use("/api", routes);
+app.use((req, res) => {
+  console.log("❌ No route matched:", req.method, req.url);
+  res.status(404).json({ message: "Route not found", path: req.url });
+});
 
 export default app;
