@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://frelanceconnect.onrender.com/api',
+   baseURL: 'https://frelanceconnect.onrender.com/api/v1',
   
 });
 
