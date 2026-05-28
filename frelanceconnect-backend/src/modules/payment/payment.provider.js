@@ -1,6 +1,6 @@
 // Example using CHAPA (Ethiopia-friendly)
 
-import axios from "axios";
+import client from "../../../core/api/client";
 
 const CHAPA_URL = "https://api.chapa.co/v1/transaction/initialize";
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import client from "../../../core/api/client";
 import { motion } from "framer-motion";
 
 import { useDispatch } from "react-redux";
@@ -42,7 +42,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const response = await axios.post("/api/v1/auth/login", form);
+      const response = await client.post("/auth/login", form);
 
       const { user, token } =
         response.data.data;

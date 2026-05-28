@@ -1,7 +1,7 @@
 // src/core/hooks/useProfile.js
 
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import client from "../../../core/api/client";
 
 const API_URL = "http://localhost:5001/api/v1";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import client from "../../../core/api/client";
 import EditSkills from "../components/EditSkills";
 import ProfileAvatarUpload from "../components/ProfileAvatarUpload";
 import { motion } from "framer-motion";

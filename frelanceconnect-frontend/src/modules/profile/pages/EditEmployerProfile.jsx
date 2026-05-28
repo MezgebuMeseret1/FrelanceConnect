@@ -1,7 +1,7 @@
 // src/modules/profile/pages/EditEmployerProfile.jsx
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import client from "../../../core/api/client";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
