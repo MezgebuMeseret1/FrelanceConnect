@@ -1,29 +1,22 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import Login from "../../modules/auth/pages/Login";
 import Register from "../../modules/auth/pages/Register";
-import EditJob from "../../modules/job/pages/EditJob";
 import JobList from "../../modules/job/pages/JobList";
 import CreateJob from "../../modules/job/pages/CreateJob";
 import EditJob from "../../modules/job/pages/EditJob";
 import JobProposals from "../../modules/proposal/pages/JobProposals";
 import MyContracts from "../../modules/contract/pages/MyContracts";
 import ContractDetails from "../../modules/contract/pages/ContractDetails";
-
 import UserDashboard from "../../modules/user/pages/UserDashboard";
 import HomeDashboard from "../../modules/user/pages/HomeDashboard";
 import ForgotPassword from "../../modules/user/pages/ForgotPassword";
-
 import MyProposals from "../../modules/proposal/pages/MyProposals";
 import SubmitProposal from "../../modules/proposal/pages/SubmitProposal";
-
 import ProtectedRoute from "./protected.routes";
-
 // MILESTONES
 import Milestones from "../../modules/milestone/pages/Milestones";
 import CreateMilestone from "../../modules/milestone/pages/CreateMilestone";
 import MilestoneDetails from "../../modules/milestone/pages/MilestoneDetails";
-
 // PROFILE
 import FreelancerProfile from "../../modules/profile/pages/FreelancerProfile";
 import EditFreelancerProfile from "../../modules/profile/pages/EditFreelancerProfile";
