@@ -2,10 +2,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../../modules/auth/pages/Login";
 import Register from "../../modules/auth/pages/Register";
-
+import EditJob from "../../modules/job/pages/EditJob";
 import JobList from "../../modules/job/pages/JobList";
 import CreateJob from "../../modules/job/pages/CreateJob";
-
+import EditJob from "../../modules/job/pages/EditJob";
 import JobProposals from "../../modules/proposal/pages/JobProposals";
 import MyContracts from "../../modules/contract/pages/MyContracts";
 import ContractDetails from "../../modules/contract/pages/ContractDetails";
@@ -61,6 +61,14 @@ function AppRouter() {
           </ProtectedRoute>
         }
       />
+      <Route
+      path="/jobs/:id/edit"
+      element={
+       <ProtectedRoute>
+        <EditJob />
+       </ProtectedRoute>
+         }
+/>
 
       {/* PROPOSALS */}
       <Route
